@@ -1,0 +1,20 @@
+# Local environments and Python cache
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Downloads and yt-dlp state
+downloads/
+*.part
+*.ytdl
+*.mkv
+*.mp4
+*.webm
+*.m4a
+.yt-dlp-download-archive.txt
+
+# Local tool configuration
+.agents/
+.codex/
+.aws/
