@@ -13,6 +13,8 @@ downloads/
 *.webm
 *.m4a
 .yt-dlp-download-archive.txt
+*cookies*.txt
+*.cookies
 
 # Local tool configuration
 .agents/

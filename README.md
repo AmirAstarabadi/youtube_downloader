@@ -10,12 +10,17 @@ removed after merging.
 ## Setup
 
 Install Python 3, then create a virtual environment and install the dependencies.
-`imageio-ffmpeg` supplies an `ffmpeg` executable inside the virtual environment:
+`imageio-ffmpeg` supplies `ffmpeg`. The `yt-dlp[default,deno]` package installs
+YouTube's JavaScript challenge scripts and a Deno runtime in the virtual
+environment:
 
 ```sh
 python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements.txt
 ```
+
+On Linux, the requirements also include `secretstorage` for Chromium browser
+cookies stored in the desktop keyring.
 
 The script also accepts a system `ffmpeg` on `PATH`. If neither is available,
 it can only download formats that already contain both video and audio.
@@ -27,7 +32,15 @@ it can only download formats that already contain both video and audio.
 ```
 
 Enter the YouTube URL, answer `y` for a whole playlist or `n` for one video,
-then enter the save directory. A video with no available 720p or higher format
+then enter the save directory. At the Cookies prompt, press Enter for public
+videos, enter a browser name such as `firefox` or `chrome` to use its logged-in
+session, or enter the path to a Netscape-format `cookies.txt` file. Sign in to
+YouTube in that browser first if YouTube asks you to confirm you are not a bot.
+Keep exported cookie files private and outside the project when possible.
+For signed-in sessions, the script also enables YouTube's web embedded client
+to work around the current "page needs to be reloaded" response.
+
+A video with no available 720p or higher format
 will fail instead of being saved at a lower resolution. Without `ffmpeg`, a
 720p or higher format must already contain audio. Merged files use MKV;
 videos that YouTube already supplies with audio may retain their original
