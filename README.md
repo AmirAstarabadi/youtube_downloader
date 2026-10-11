@@ -50,4 +50,12 @@ For playlists, rerun the script with the same URL and save directory to resume.
 The hidden `.yt-dlp-download-archive.txt` file in that directory records videos
 that finished successfully, so they are skipped on later runs. Incomplete
 `.part` files are resumed when possible. Keep the archive file and partial
-files in place between runs.
+files in place between runs. The script waits between playlist requests and
+videos. If one item fails, it tries later items and exits with an error; rerun
+the same playlist to retry any missing videos.
+
+If Chrome cookies work at first but YouTube later asks you to sign in again,
+the browser session may have changed. For a longer-running playlist, use a
+fresh YouTube-only `cookies.txt` file from a private browser window, following
+the [yt-dlp YouTube cookie export guide](https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies).
+Enter that file's path at the Cookies prompt. Keep the file private.

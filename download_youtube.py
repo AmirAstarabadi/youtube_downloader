@@ -132,6 +132,10 @@ def main() -> int:
         }
         if playlist:
             options["download_archive"] = str(directory / ".yt-dlp-download-archive.txt")
+            options["ignoreerrors"] = True
+            options["sleep_interval_requests"] = 1
+            options["sleep_interval"] = 5
+            options["max_sleep_interval"] = 10
         if cookies:
             options["extractor_args"] = {
                 "youtube": {"player_client": ["default", "web_embedded"]}
@@ -142,14 +146,19 @@ def main() -> int:
         with yt_dlp.YoutubeDL(options) as downloader:
             result = downloader.download([url])
         if result:
-            print("Download did not complete successfully.", file=sys.stderr)
+            print(
+                "Some videos failed. Completed videos are saved; rerun with the same "
+                "playlist and directory to retry the missing ones. If YouTube keeps "
+                "asking you to sign in, use a fresh YouTube cookies.txt file.",
+                file=sys.stderr,
+            )
             return 1
     except (OSError, yt_dlp.utils.YoutubeDLError) as error:
         print(f"Download failed: {error}", file=sys.stderr)
         if "sign in to confirm" in str(error).lower() or "not a bot" in str(error).lower():
             print(
-                "Sign in to YouTube in your browser, then rerun and enter that browser "
-                "at the Cookies prompt (or provide a Netscape cookies.txt file).",
+                "YouTube rejected this session. Rerun later with the same directory, "
+                "or use a fresh YouTube cookies.txt file at the Cookies prompt.",
                 file=sys.stderr,
             )
         if not ffmpeg:
