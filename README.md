@@ -1,6 +1,7 @@
 # YouTube downloader
 
-This interactive Python script downloads one YouTube video or an entire playlist.
+This Python script downloads YouTube videos and playlists from `tasks.csv` in
+the project directory.
 It selects the best available video at **720p or higher** (interpreting the
 requested 700 or higher quality as a minimum of 720p) and includes audio in
 each finished file. `yt-dlp` uses `ffmpeg` to merge separate video and audio
@@ -31,14 +32,21 @@ it can only download formats that already contain both video and audio.
 .venv/bin/python download_youtube.py
 ```
 
-Enter the YouTube URL, answer `y` for a whole playlist or `n` for one video,
-then enter the save directory. At the Cookies prompt, press Enter for public
-videos, enter a browser name such as `firefox` or `chrome` to use its logged-in
-session, or enter the path to a Netscape-format `cookies.txt` file. Sign in to
-YouTube in that browser first if YouTube asks you to confirm you are not a bot.
-Keep exported cookie files private and outside the project when possible.
-For signed-in sessions, the script also enables YouTube's web embedded client
-to work around the current "page needs to be reloaded" response.
+Each CSV row has five fields, without a header: `URL,playlist,directory,cookies,status`.
+Use `y` to download a whole playlist or `n` for one video. The cookies field
+can be empty for public videos, a browser name such as `firefox` or `chrome`,
+or a path to a Netscape-format `cookies.txt` file. Relative directory and
+cookie paths are resolved from the project directory. Sign in to YouTube in
+the browser first if YouTube asks you to confirm you are not a bot. Keep
+exported cookie files private and outside the project when possible. For
+signed-in sessions, the script also enables YouTube's web embedded client to
+work around the current "page needs to be reloaded" response.
+
+Set the last field to `pending` for a new task. The script processes rows in
+order and changes a row to `done` immediately after its download succeeds.
+It skips `done` rows on later runs. Failed rows keep their previous status so
+they can be retried; other rows still run. A run exits with an error if any row
+fails.
 
 A video with no available 720p or higher format
 will fail instead of being saved at a lower resolution. Without `ffmpeg`, a
